@@ -1,0 +1,17 @@
+# Aliases
+alias ls='exa'
+alias ll='exa -l -sold'
+alias la='exa -la'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias grep='grep --color=auto'
+alias so='source'
+alias c='clear'
+alias vi='nvim'
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+# temp shortcuts
+alias fixExtScr='xrandr --output DP-1 --mode 3440x1440 --left-of eDP-1 --auto'
+alias b1='brightnessctl set 1%; clear;'
+alias b2='brightnessctl set 55%; clear;'
