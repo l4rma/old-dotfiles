@@ -52,7 +52,7 @@ bindkey '^K' end-of-line
 bindkey '^H' backward-delete-word
 
 # PATHs
-export PATH="/home/larma/.cargo/bin/:$PATH" # Diesel Cli v1.4.1
+export PATH="$HOME/.cargo/bin/:$PATH" # Diesel Cli v1.4.1
 
 # Set default browser
 export BROWSER=firefox
