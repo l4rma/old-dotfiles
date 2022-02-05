@@ -5,36 +5,36 @@
 modkey = "Mod4"
 mousekey = "Mod4"
 tags = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-layouts = ["Fibonacci"]
-#layouts = ["MainAndVertStack", "MainAndHorizontalStack", "MainAndDeck", "GridHorizontal", "EvenHorizontal", "EvenVertical", "CenterMain", "CenterMainBalanced", "Monocle", "RightWiderLeftStack", "LeftWiderRightStack"]
+#layouts = ["Fibonacci"]
+layouts = ["MainAndVertStack", "MainAndHorizontalStack", "MainAndDeck", "GridHorizontal", "EvenHorizontal", "EvenVertical", "CenterMain", "CenterMainBalanced", "Monocle", "RightWiderLeftStack", "LeftWiderRightStack"]
 layout_mode = "Workspace"
-scratchpad = [{ name = "Notes", value = "alacritty", x = 1470, y = 390, height = 600, width = 600 },] # with res: 3440x1440
+scratchpad = [{ name = "Notes", value = "nvim", x = 770, y = 390, height = 600, width = 600 },] # with res: 3440x1440
 disable_current_tag_swap = false
 focus_behaviour = "Sloppy" #follows mouse and keyboard
 focus_new_windows = true
 
 # Default (without extra monitor)
-#[[workspaces]]
-#y = 0
-#x = 0
-#height = 1080
-#width = 1920
-#id = 0
-
-# With UltraWideScreen monitor connected
 [[workspaces]]
 y = 0
 x = 0
-height = 1440
-width = 3440
-id = 0
-
-[[workspaces]]
-y = 0
-x = 3440
 height = 1080
 width = 1920
-id = 1
+id = 0
+
+# With UltraWideScreen monitor connected
+#[[workspaces]]
+#y = 0
+#x = 0
+#height = 1440
+#width = 3440
+#id = 0
+#
+#[[workspaces]]
+#y = 0
+#x = 3440
+#height = 1080
+#width = 1920
+#id = 1
 
 
 ###
@@ -46,6 +46,12 @@ command = "Execute"
 value = "rofi -show run -theme gruvbox-dark"
 modifier = ["modkey"]
 key = "d"
+
+[[keybind]]
+command = "Execute"
+value = "rofi -show window -theme gruvbox-dark"
+modifier = ["modkey"]
+key = "Tab"
 
 [[keybind]]
 command = "Execute"
