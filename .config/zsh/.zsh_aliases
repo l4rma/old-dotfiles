@@ -8,13 +8,21 @@ alias ....='cd ../../..'
 alias grep='grep --color=auto'
 alias so='source'
 alias c='clear'
+alias nf='clear; neofetch;'
 
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
+alias fish='asciiquarium'
 alias oo='xdg-open'
 alias vi='nvim'
 alias z='zathura' # pdf viewer
 alias ff='firefox'
+
+# git repo with dotfiles scattered all over
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+# Searches for second argument on google
+alias \?='{read -r arg; firefox "https://google.com/search?q=${arg}" & disown;} <<<'
+alias yt='{read -r arg; firefox "https://www.youtube.com/results?search_query=${arg}" & disown;} <<<'
+
 
 # temp shortcuts
 alias fixExtScr='xrandr --output DP-1 --mode 3440x1440 --left-of eDP-1 --auto'

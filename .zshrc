@@ -12,7 +12,16 @@ export ZDOTDIR=$HOME/.config/zsh
 
 # Enable colors and change prompt:
 autoload -U colors && colors
-PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+#PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+
+# Load version control information
+autoload -Uz vcs_info
+precmd() { vcs_info }
+# Format the vcs_info_msg_0_ variable
+zstyle ':vcs_info:git:*' formats '( %b)'
+# Set up the prompt (with git branch name)
+setopt PROMPT_SUBST
+PROMPT='%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%1~%{$fg[red]%}]%{$reset_color%}%b${vcs_info_msg_0_}$ '
 
 # History in cache directory:
 HISTSIZE=10000
@@ -53,6 +62,9 @@ bindkey '^H' backward-delete-word
 
 # PATHs
 export PATH="$HOME/.cargo/bin/:$PATH" # Diesel Cli v1.4.1
+export PATH="$PATH:$(go env GOPATH)/bin" # Golang
+export PATH="$PATH:$HOME/development/flutter/bin" # Flutter
+export PATH="$PATH:$HOME/development/cmdline-tools/bin" # AVD/SDK-manager
 
 # Set default browser
 export BROWSER=firefox
