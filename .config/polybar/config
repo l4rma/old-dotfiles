@@ -43,7 +43,7 @@ font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
 
 modules-left = logo workspaces xwindow
-modules-right = aur-updates temperature date clock battery
+modules-right = aur-updates cpu memory-usage temperature date clock backlight alsa battery
 
 tray-position = right
 tray-padding = 2
@@ -72,6 +72,14 @@ label-empty-foreground = ${colors.foreground}
 type = custom/text
 content = " "
 content-foreground = ${colors.foreground-alt} 
+
+[module/memory-usage]
+type = custom/script
+exec = polyMemUsed
+interval = 10
+label = "RAM %output% MB"
+format-prefix = "  "
+format-prefix-foreground = ${colors.foreground-alt} 
 
 [module/aur-updates]
 type = custom/script
@@ -144,6 +152,7 @@ ramp-capacity-1 = "  "
 ramp-capacity-2 = "  "
 ramp-capacity-3 = "  "
 ramp-capacity-4 = "  "
+ramp-capacity-foreground = ${colors.foreground-alt}
 
 animation-charging-0 = "  "
 animation-charging-1 = "  "
@@ -157,8 +166,35 @@ animation-charging-framerate = 750
 type = custom/script
 exec = polyCpuTemp
 label = "%output%"
-format-prefix="CPU "
+format-prefix="  "
 interval = 2
+format-prefix-foreground = ${colors.foreground-alt} 
+
+[module/alsa]
+type = internal/alsa
+format-muted = <label-muted>
+label-muted = ﱝ  muted
+label-muted-foreground = ${colors.alert}
+ramp-volume-0 = "奔 "
+ramp-volume-1 = "墳 "
+ramp-volume-2 = " "
+ramp-volume-foreground = ${colors.foreground-alt}
+format-volume = <ramp-volume> <label-volume> 
+label-volume = %percentage%%
+
+[module/backlight]
+type = internal/backlight
+card = intel_backlight
+enable-scroll = true
+label = %percentage%%
+format-prefix="ﯦ  "
+format-prefix-foreground = ${colors.foreground-alt} 
+
+[module/cpu]
+type = internal/cpu
+interval = 1
+label = CPU %percentage%%
+format-prefix="  "
 format-prefix-foreground = ${colors.foreground-alt} 
 
 ; vim:ft=dosini
