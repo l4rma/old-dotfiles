@@ -9,12 +9,14 @@ alias grep='grep --color=auto'
 alias so='source'
 alias c='clear'
 alias nf='clear; neofetch;'
+alias pacman='sudo pacman -Syu'
 
 alias fish='asciiquarium'
 alias oo='xdg-open'
 alias vi='nvim'
 alias z='zathura' # pdf viewer
 alias ff='firefox'
+alias pp='~/.config/polybar/launch.sh'
 
 # git repo with dotfiles scattered all over
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
@@ -25,6 +27,6 @@ alias yt='{read -r arg; firefox "https://www.youtube.com/results?search_query=${
 
 
 # temp shortcuts
-alias fixExtScr='xrandr --output DP-1 --mode 3440x1440 --left-of eDP-1 --auto'
+alias fixExtScr='xrandr --output DP-2 --mode 3440x1440 --left-of eDP-1 --auto'
 alias b1='brightnessctl set 1%; clear;'
 alias b2='brightnessctl set 55%; clear;'
