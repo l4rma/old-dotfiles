@@ -5,8 +5,8 @@
 modkey = "Mod4"
 mousekey = "Mod4"
 tags = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-#layouts = ["Fibonacci"]
-layouts = ["MainAndVertStack", "MainAndHorizontalStack", "MainAndDeck", "GridHorizontal", "EvenHorizontal", "EvenVertical", "CenterMain", "CenterMainBalanced", "Monocle", "RightWiderLeftStack", "LeftWiderRightStack"]
+layouts = ["CenterMain"]
+#layouts = ["MainAndVertStack", "MainAndHorizontalStack", "MainAndDeck", "GridHorizontal", "EvenHorizontal", "EvenVertical", "MainAndHorizontalStack", "CenterMainBalanced", "Monocle", "RightWiderLeftStack", "LeftWiderRightStack"]
 layout_mode = "Workspace"
 scratchpad = [{ name = "Notes", value = "nvim", x = 770, y = 390, height = 600, width = 600 },] # with res: 3440x1440
 disable_current_tag_swap = false
@@ -36,6 +36,19 @@ id = 0
 #width = 1920
 #id = 1
 
+# Extern 16:9 second monitor
+#[[workspaces]]
+#y = 0
+#x = 0
+#height = 1080
+#width = 1920
+#id = 0
+#[[workspaces]]
+#y = 0
+#x = 1920
+#height = 1200
+#width = 1920
+#id = 1
 
 ###
 # Keybindings
