@@ -10,13 +10,16 @@ alias so='source'
 alias c='clear'
 alias nf='clear; neofetch;'
 alias pacman='sudo pacman -Syu'
+alias clock='tty-clock -f "%d-%m-%Y"'
 
 alias fish='asciiquarium'
 alias oo='xdg-open'
 alias vi='nvim'
 alias z='zathura' # pdf viewer
 alias ff='firefox'
-alias pp='~/.config/polybar/launch.sh'
+alias pp='~/.config/polybar/launch.sh' # Kill and run polybar
+alias go='grc go' # Adds colors to go tests
+alias td='tmux-dev' # Script to start a custom tmux session
 
 # git repo with dotfiles scattered all over
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
