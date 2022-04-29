@@ -20,6 +20,7 @@ alias ff='firefox'
 alias pp='~/.config/polybar/launch.sh' # Kill and run polybar
 alias go='grc go' # Adds colors to go tests
 alias td='tmux-dev' # Script to start a custom tmux session
+alias cw='change-wallpaper.sh' # Script to change to a random wallpaper on screen 0 and 1
 
 # git repo with dotfiles scattered all over
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
