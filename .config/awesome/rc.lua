@@ -17,6 +17,8 @@ local naughty = require("naughty")
 local ruled = require("ruled")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+local lain = require("lain")
+
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -97,12 +99,124 @@ end)
 local mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- Create a textclock widget
-local mytextclock = wibox.widget.textclock('🗓️  %a %d/%m-%y | 🕑 %H:%M')
+local mytextclock = wibox.widget.textclock('| 🗓️ %a %d/%m-%y | 🕑 %H:%M')
 
 -- Calendar
 local month_calendar = awful.widget.calendar_popup.month()
 month_calendar:attach( mytextclock, "tr" )
 --month_calendar:toggle()
+
+-- Battery
+local batterywidget = wibox.widget.textbox()
+batterywidget:set_text(" | 🔋 ..% ")
+local batterywidgettimer = timer({ timeout = 60 })
+batterywidgettimer:connect_signal("timeout",
+  function()
+    local fh = assert(io.popen("acpi | cut -d, -f 2 -", "r"))
+    batterywidget:set_text(" | 🔋" .. fh:read("*l") .. " ")
+    fh:close()
+  end
+)
+batterywidgettimer:start()
+
+-- CPU widget
+local cpu = lain.widget.cpu {
+    settings = function()
+        widget:set_markup("| 🧠 " .. cpu_now.usage .. "% ")
+    end
+}
+
+-- Memory Usage
+local mymem = lain.widget.mem {
+    settings = function()
+        local used = string.format("%.1f",mem_now.used/1000)
+        local tot = string.format("%.1f", mem_now.total/1000)
+        widget:set_markup("| 💾 " .. used .. "G/" .. tot .. "G ")
+    end
+}
+
+-- Temp
+local mytemp = lain.widget.temp {
+    settings = function()
+        widget:set_markup("|🌡️ " .. coretemp_now .."ºC ")
+    end
+}
+
+local volume = lain.widget.alsa {
+    settings = function()
+        if volume_now.status == "on" then
+            widget:set_markup("| 🔉 " .. volume_now.level .. "% ")
+        else
+            widget:set_markup("| 🔇 mute ")
+        end
+    end
+}
+volume.widget:buttons(awful.util.table.join(
+    awful.button({}, 1, function() -- left click
+        awful.spawn(string.format("%s -e alsamixer", terminal))
+    end),
+    awful.button({}, 2, function() -- middle click
+        os.execute(string.format("%s set %s 100%%", volume.cmd, volume.channel))
+        volume.update()
+    end),
+    awful.button({}, 3, function() -- right click
+        os.execute(string.format("%s set %s toggle", volume.cmd, volume.togglechannel or volume.channel))
+        volume.update()
+    end),
+    awful.button({}, 4, function() -- scroll up
+        os.execute(string.format("%s set %s 1%%+", volume.cmd, volume.channel))
+        volume.update()
+    end),
+    awful.button({}, 5, function() -- scroll down
+        os.execute(string.format("%s set %s 1%%-", volume.cmd, volume.channel))
+        volume.update()
+    end)
+))
+
+-- Wifi
+local mynetdown = wibox.widget.textbox()
+local mynetup = lain.widget.net {
+    settings = function()
+        widget:set_markup(net_now.sent)
+        mynetdown:set_markup(net_now.received)
+    end
+}
+
+local wifi_icon = wibox.widget.imagebox()
+local eth_icon = wibox.widget.imagebox()
+local net = lain.widget.net {
+    notify = "off",
+    wifi_state = "on",
+    eth_state = "on",
+    settings = function()
+        local eth0 = net_now.devices.eth0
+        if eth0 then
+            if eth0.ethernet then
+                eth_icon:set_image(ethernet_icon_filename)
+            else
+                eth_icon:set_image()
+            end
+        end
+
+        local wlan0 = net_now.devices.wlan0
+        if wlan0 then
+            if wlan0.wifi then
+                local signal = wlan0.signal
+                if signal < -83 then
+                    wifi_icon:set_image(wifi_weak_filename)
+                elseif signal < -70 then
+                    wifi_icon:set_image(wifi_mid_filename)
+                elseif signal < -53 then
+                    wifi_icon:set_image(wifi_good_filename)
+                elseif signal >= -53 then
+                    wifi_icon:set_image(wifi_great_filename)
+                end
+            else
+                wifi_icon:set_image()
+            end
+        end
+    end
+}
 
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Each screen has its own tag table.
@@ -177,7 +291,12 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 layout = wibox.layout.fixed.horizontal,
                 mykeyboardlayout,
                 wibox.widget.systray(),
+                mytemp.widget,
+                mymem.widget,
+                cpu.widget,
+                volume.widget,
                 mytextclock,
+                batterywidget,
             },
         }
     }
@@ -217,6 +336,8 @@ awful.keyboard.append_global_keybindings({
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey },            "r",     function () awful.util.spawn("rofi -show run -show-icons -theme gruvbox-dark") end,
+              {description = "run prompt", group = "launcher"}),
+    awful.key({ modkey },            "e",     function () awful.util.spawn("rofi -show emoji -modi emoji -theme gruvbox-dark") end,
               {description = "run prompt", group = "launcher"}),
     awful.key({ modkey },            "i",     function () awful.util.spawn("firefox") end,
               {description = "launch browser", group = "launcher"}),

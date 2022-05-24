@@ -42,7 +42,9 @@ theme.border_color_marked = "#91231c"
 -- prompt_[fg|bg|fg_cursor|bg_cursor|font]
 -- hotkeys_[bg|fg|border_width|border_color|shape|opacity|modifiers_fg|label_bg|label_fg|group_margin|font|description_font]
 -- Example:
---theme.taglist_bg_focus = "#ff0000"
+theme.taglist_bg_focus = "#d79921"
+theme.taglist_fg_focus = "#282828"
+--theme.tasklist_bg_focus = "#202020"
 
 -- Generate taglist squares:
 local taglist_square_size = dpi(5)
@@ -118,6 +120,34 @@ theme.layout_cornernw = themes_path.."default/layouts/cornernww.png"
 theme.layout_cornerne = themes_path.."default/layouts/cornernew.png"
 theme.layout_cornersw = themes_path.."default/layouts/cornersww.png"
 theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
+
+-- Wireless
+local widgets = {
+    wirelessStatus = require("widgets/wirelessStatus"),
+}
+-- Wireless status widget (`status` is presumably device dependent)
+theme.wirelessStatus = widgets.wirelessStatus({
+    notification_preset = { font = "Mononoki Nerd Font 10", fg = theme.fg_normal },
+    timeout = 10,
+    settings = function(self)
+        if self.status == "1" or self.status == "" then
+            self.widget:set_image(theme.wifidisc)
+        else
+            if self.perc <= 5 then
+                self.widget:set_image(theme.wifinone)
+            elseif self.perc <= 25 then
+                self.widget:set_image(theme.wifilow)
+            elseif self.perc <= 50 then
+                self.widget:set_image(theme.wifimed)
+            elseif self.perc <= 75 then
+                self.widget:set_image(theme.wifihigh)
+            else
+                self.widget:set_image(theme.wififull)
+            end
+        end
+    end,
+})
+--local widget_wirelessStatus = wibox.widget { nil, theme.wirelessStatus.widget, layout = wibox.layout.align.horizontal }
 
 -- Generate Awesome icon:
 theme.awesome_icon = theme_assets.awesome_icon(
