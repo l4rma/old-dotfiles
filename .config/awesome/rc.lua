@@ -101,6 +101,23 @@ local mykeyboardlayout = awful.widget.keyboardlayout()
 -- Create a textclock widget
 local mytextclock = wibox.widget.textclock('| 🗓️ %a %d/%m-%y | 🕑 %H:%M')
 
+-- Wifi
+local mywifi = wibox.widget.textbox()
+mywifi:set_text("| 📡 loading.. ")
+
+
+local wifitimer = timer({ timeout = 10 })
+wifitimer:connect_signal("timeout",
+    function()
+        local ssid = assert(io.popen("iw dev wlp0s20f3 link | grep SSID: | awk '{printf($2)}'", "r"))
+        local sig = assert(io.popen("iw dev wlp0s20f3 link | sed -n '/signal/s/.*\\(-[0-9]*\\).*/\\1/p' | awk '{print ($1 > -50 ? 100 :($1 < -100 ? 0 : ($1+100)*2))}'"))
+        mywifi:set_text("| 📡 " .. sig:read("*l") .. "% " .. ssid:read("*l") .. " ")
+        ssid:close()
+        sig:close()
+    end
+)
+wifitimer:start()
+
 -- Calendar
 local month_calendar = awful.widget.calendar_popup.month()
 month_calendar:attach( mytextclock, "tr" )
@@ -142,6 +159,7 @@ local mytemp = lain.widget.temp {
     end
 }
 
+-- Volume widget
 local volume = lain.widget.alsa {
     settings = function()
         if volume_now.status == "on" then
@@ -172,51 +190,6 @@ volume.widget:buttons(awful.util.table.join(
         volume.update()
     end)
 ))
-
--- Wifi
-local mynetdown = wibox.widget.textbox()
-local mynetup = lain.widget.net {
-    settings = function()
-        widget:set_markup(net_now.sent)
-        mynetdown:set_markup(net_now.received)
-    end
-}
-
-local wifi_icon = wibox.widget.imagebox()
-local eth_icon = wibox.widget.imagebox()
-local net = lain.widget.net {
-    notify = "off",
-    wifi_state = "on",
-    eth_state = "on",
-    settings = function()
-        local eth0 = net_now.devices.eth0
-        if eth0 then
-            if eth0.ethernet then
-                eth_icon:set_image(ethernet_icon_filename)
-            else
-                eth_icon:set_image()
-            end
-        end
-
-        local wlan0 = net_now.devices.wlan0
-        if wlan0 then
-            if wlan0.wifi then
-                local signal = wlan0.signal
-                if signal < -83 then
-                    wifi_icon:set_image(wifi_weak_filename)
-                elseif signal < -70 then
-                    wifi_icon:set_image(wifi_mid_filename)
-                elseif signal < -53 then
-                    wifi_icon:set_image(wifi_good_filename)
-                elseif signal >= -53 then
-                    wifi_icon:set_image(wifi_great_filename)
-                end
-            else
-                wifi_icon:set_image()
-            end
-        end
-    end
-}
 
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Each screen has its own tag table.
@@ -294,6 +267,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 mytemp.widget,
                 mymem.widget,
                 cpu.widget,
+                mywifi,
                 volume.widget,
                 mytextclock,
                 batterywidget,
