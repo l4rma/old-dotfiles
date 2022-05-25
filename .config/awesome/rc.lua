@@ -163,12 +163,19 @@ local mytemp = lain.widget.temp {
 local volume = lain.widget.alsa {
     settings = function()
         if volume_now.status == "on" then
-            widget:set_markup("| 🔉 " .. volume_now.level .. "% ")
+            if volume_now.level > 65 then
+                widget:set_markup("| 🔊 " .. volume_now.level .. "% ")
+            elseif volume_now.level > 30 then
+                widget:set_markup("| 🔉 " .. volume_now.level .. "% ")
+                else
+                widget:set_markup("| 🔈 " .. volume_now.level .. "% ")
+            end
         else
             widget:set_markup("| 🔇 mute ")
         end
     end
 }
+
 volume.widget:buttons(awful.util.table.join(
     awful.button({}, 1, function() -- left click
         awful.spawn(string.format("%s -e alsamixer", terminal))
