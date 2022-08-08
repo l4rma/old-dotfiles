@@ -57,13 +57,15 @@ bindkey -v '^?' backward-delete-char
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
 
-bindkey '^J' beginning-of-line
-bindkey '^K' end-of-line 
+#bindkey '^J' beginning-of-line
+#bindkey '^K' end-of-line 
 bindkey '^H' backward-delete-word
 
 # Extra PATHs
 PATH="$PATH:$(go env GOPATH)/bin" # Golang
 PATH="$PATH:$HOME/scripts/bin" # homemade scripts
+PATH="$PATH:$HOME/.local/bin" # homemade scripts
+PATH="$PATH:$HOME/.emacs.d/bin"
 export PATH
 
 # Set default browser
@@ -84,3 +86,4 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+neofetch
