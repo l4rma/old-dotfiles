@@ -1,3 +1,5 @@
+no longer used or maintained
+
 # Dotfiles
 For personal use, might include tons of bugs (:
 
